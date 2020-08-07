@@ -1,19 +1,20 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const validator = require('validator');
 
-const Employee = mongoose.model('Employee', new mongoose.Schema({
-    empId: {
-        type: Number,
-        default: TRUE,
+empSchema = new mongoose.Schema({
+    email: {
+        type: String,
+        required: true,
+        trim: true,
         validate(value) {
-          if (value < 0) {
-            throw new Error('empId must be a positive number');
+          if (!validator.isEmail(value)) {
+            throw new Error('Improper email.');
           }
         }
     },
     name: {
         type: String,
-        required: true,
         trim: true
     },
     password: {
@@ -35,7 +36,10 @@ const Employee = mongoose.model('Employee', new mongoose.Schema({
     }
 }, {
     timestamps: true
-})
-);
+});
+
+empSchema.plugin(AutoIncrement, {id:'empId_counter', inc_field: 'empId'});
+
+const Employee = mongoose.model('Employee', empSchema);
 
 module.exports = Employee;
