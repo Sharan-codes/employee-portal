@@ -28,8 +28,8 @@ const Project = mongoose.model('Project', new mongoose.Schema({
       type: Number,
       default: TRUE,
       validate(value) {
-        if (value!==1 && value!==2) {
-          throw new Error('status must be 1 or 2');
+        if (value!==TRUE && value!==FALSE) {
+          throw new Error('status must be TRUE or FALSE');
         }
       }
     }
