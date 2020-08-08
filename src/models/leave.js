@@ -1,16 +1,8 @@
 const mongoose = require('mongoose');
+const AutoIncrement = require('mongoose-sequence')(mongoose);
 const validator = require('validator');
 
-const Leave = mongoose.model('Leave', new mongoose.Schema({
-    leaveId: {
-        type: Number,
-        default: TRUE,
-        validate(value) {
-          if (value < 0) {
-            throw new Error('leaveId must be a positive number');
-          }
-        }
-    },
+leaveSchema = new mongoose.Schema({
     appliedBy: {
         type: Number,
         required: true
@@ -47,6 +39,9 @@ const Leave = mongoose.model('Leave', new mongoose.Schema({
 }, {
     timestamps: true
 })
-);
+
+leaveSchema.plugin(AutoIncrement, {id:'leaveId_counter', inc_field: 'leaveId'});
+
+const Leave = mongoose.model('Leave', leaveSchema);
 
 module.exports = Leave;
