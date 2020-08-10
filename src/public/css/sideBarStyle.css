@@ -6,7 +6,7 @@
   box-sizing: border-box;
   font-family: 'Poppins', sans-serif;
 }
-.btn{
+.sbtn{
   position: absolute;
   top: 15px;
   left: 45px;
@@ -18,15 +18,15 @@
   cursor: pointer;
   transition: left 0.4s ease;
 }
-.btn.click{
+.sbtn.click{
   left: 260px;
 }
-.btn span{
+.sbtn span{
   color: white;
   font-size: 28px;
   line-height: 45px;
 }
-.btn.click span:before{
+.sbtn.click span:before{
   content: '\f00d';
 }
 .sidebar{
@@ -129,11 +129,4 @@ nav ul li a span.rotate{
   z-index: -1;
   text-align: center;
 }
-.content .header{
-  font-size: 45px;
-  font-weight: 600;
-}
-.content p{
-  font-size: 30px;
-  font-weight: 500;
-}
+
