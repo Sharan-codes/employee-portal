@@ -6,7 +6,6 @@ const router = new express.Router();
 router.get('/login', async (req, res) => {
   try {
     const employee = await Employee.findOne({ email: req.query.email });
-    console.log(req.query.email);
 
     //if employee is present check the password
     if (employee) {
