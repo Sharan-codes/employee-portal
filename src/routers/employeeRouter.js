@@ -25,8 +25,9 @@ router.get('/login', async (req, res) => {
       console.log(req.session.employee);
       
       if (employee.empManaged.length !== 0) {
-        return res.status(200).send("Manager");
-        // return res.redirect('addEvent.html');
+        // return res.status(200).send("Manager");
+        return res.status(200).send({ redirect: '/homeManager' });
+        //return res.redirect('Navtrial.html');
       } 
       else {
         return res.status(200).send("Non manager");
@@ -61,6 +62,23 @@ router.get('/login', async (req, res) => {
 //To redirect if already logged in
 router.get('/', (req, res) => {
   return res.redirect('login.html');
+});
+
+//To update details of an employee
+router.post('/updateDetails', async (req, res) => {
+  try {
+    const employee = new Employee({
+      email: req.body.email,
+      password: req.body.password
+    });
+    console.log(employee);
+    await employee.save();
+    return res.status(201).send(employee.email+" registered with empId "+employee.empId);
+    
+  }
+  catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 module.exports = router;
