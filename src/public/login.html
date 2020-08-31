@@ -69,7 +69,7 @@
 					type: 'GET',
 					url: '/login?email='+$("#email").val()+'&password='+$("#password").val(),
 					success: function (result) {
-						//window.location= "/register_success.html";
+						window.location= result.redirect;
 						console.log(result);
 					},
 					error: function (request, status, error) {
