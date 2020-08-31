@@ -4,6 +4,7 @@ const express = require('express');
 var session = require('express-session');
 require('./src/db/mongoose');
 const employeeRouter = require('./src/routers/employeeRouter');
+const managerRouter = require('./src/routers/managerRouter');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(employeeRouter);
+app.use(managerRouter);
 
 app.set('views', __dirname+'\\src\\views');
 
