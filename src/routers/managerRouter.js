@@ -12,7 +12,6 @@ router.get('/homeManager', async (req, res) => {
     const emp = await Employee.findOne({
       empId : req.session.employee.empId
     });
-    console.log(emp);
 		
     return res.render('pages/Navtrial', { emp : emp });
   }
