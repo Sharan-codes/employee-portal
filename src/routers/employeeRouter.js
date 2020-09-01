@@ -67,14 +67,20 @@ router.get('/', (req, res) => {
 //To update details of an employee
 router.post('/updateDetails', async (req, res) => {
   try {
-    const employee = new Employee({
-      email: req.body.email,
-      password: req.body.password
-    });
-    console.log(employee);
-    await employee.save();
-    return res.status(201).send(employee.email+" registered with empId "+employee.empId);
     
+    const emp = await Employee.findOneAndUpdate({
+      empId : req.session.employee.empId
+    },{
+      name : req.body.name,
+      dateOfBirth : req.body.dateOfBirth,
+      phone : req.body.phone
+    });
+    if (!emp) {
+      console.log("Employee not found");
+      return res.status(404).send("Employee not found");
+    }
+    console.log("Details updated.");
+    return res.status(200).send("Details updated");
   }
   catch (e) {
     res.status(400).send(e);
