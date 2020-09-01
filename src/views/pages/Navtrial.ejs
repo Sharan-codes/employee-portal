@@ -13,13 +13,13 @@
     <link rel="stylesheet" href="css/sideBarStyle.css">
     <link rel="stylesheet" href="css/infoForm.css">
   </head>
-  <body>
+  <body onload="load()">
     <div class="sbtn click">
       <span class="fas fa-bars"></span>
     </div>
 <nav class="sidebar show">
       <div class="text">
-<%= emp.email %></div>
+<span id="sideName"><%= emp.email %></span></div>
 <ul>
 <li class="active"><a href='/homeManager'>Profile</a></li>
 <li><a href="#">Project</a></li>
@@ -172,28 +172,39 @@
         $(this).addClass("active").siblings().removeClass("active");
       });
 
-        $('#submitbtn').click(function(event) {
-                event.preventDefault();
-                    $.ajax({
-                        global: false,
-                        type: 'POST',
-                        url: '/updateDetails',
-                        data: {
-                            name: $("#name").val(),
-                            dateOfBirth: $("#dob").val(),
-                            phone: $("#phone").val()
-                        },
-                        success: function (result) {
-                            alert(result.message);
-                            //window.location.href = result.redirect;
-                            console.log(result.message);
-                        },
-                        error: function (request, status, error) {
-                            console.log(error);
-                        }
-                    });
-        });
-    </script>
+    function load() {
+        if ('<%= emp.name %>' !== '')
+        {
+            var sideName = document.getElementById('sideName');
+            sideName.innerText = sideName.textContent = '<%= emp.name %>';
+        }
+        var dob = new Date("<%= emp.dateOfBirth %>");
+        document.getElementById('name').value = '<%= emp.name %>';
+        document.getElementById('dob').value = dob.toLocaleDateString();
+        document.getElementById('phone').value = '<%= emp.phone %>';
+    }
+    $('#submitbtn').click(function(event) {
+            event.preventDefault();
+                $.ajax({
+                    global: false,
+                    type: 'POST',
+                    url: '/updateDetails',
+                    data: {
+                        name: $("#name").val(),
+                        dateOfBirth: $("#dob").val(),
+                        phone: $("#phone").val()
+                    },
+                    success: function (result) {
+                        alert(result);
+                        //window.location.href = result.redirect;
+                        console.log(result);
+                    },
+                    error: function (request, status, error) {
+                        console.log(error);
+                    }
+                });
+    });
+</script>
 
-  </body>
+</body>
 </html>
