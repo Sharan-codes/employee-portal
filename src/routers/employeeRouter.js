@@ -27,11 +27,10 @@ router.get('/login', async (req, res) => {
       if (employee.empManaged.length !== 0) {
         // return res.status(200).send("Manager");
         return res.status(200).send({ redirect: '/homeManager' });
-        //return res.redirect('Navtrial.html');
       } 
       else {
-        return res.status(200).send("Non manager");
-        //return res.redirect('/userViewEvents');
+        return res.status(200).send({ redirect: '/homeEmployee' });
+        //return res.status(200).send("Non manager");
       }
     } else {
       return res.status(400).send("user not found");
@@ -58,6 +57,28 @@ router.get('/login', async (req, res) => {
     res.status(400).send(e);
   }
 });*/
+
+//Homepage for employee
+router.get('/homeEmployee', async (req, res) => {
+  try {  
+    //Return to login page on back button press if already logged out
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    if (!req.session.employee ) {
+      return res.redirect('login.html');
+    }
+    const emp = await Employee.findOne({
+      empId : req.session.employee.empId
+    });
+    const empManager = await Employee.findOne({
+      empId : emp.manager
+    });
+
+    return res.render('pages/homePageEmployee', { emp : emp, manager : empManager.name });
+  }
+  catch (e) {
+    res.status(400).send(e);
+  }
+});
 
 //To redirect if already logged in
 router.get('/', (req, res) => {
