@@ -2,6 +2,7 @@ const Employee = require('../models/employee');
 const express = require('express');
 const router = new express.Router();
 
+//Homepage for manager
 router.get('/homeManager', async (req, res) => {
   try {  
     //Return to login page on back button press if already logged out
@@ -13,7 +14,7 @@ router.get('/homeManager', async (req, res) => {
       empId : req.session.employee.empId
     });
 		
-    return res.render('pages/Navtrial', { emp : emp });
+    return res.render('pages/homePageManager', { emp : emp });
   }
   catch (e) {
     res.status(400).send(e);
