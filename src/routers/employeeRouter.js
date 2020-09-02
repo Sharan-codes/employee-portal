@@ -1,5 +1,6 @@
 const Employee = require('../models/employee');
 const express = require('express');
+const Leave = require('../models/leave');
 const router = new express.Router();
 
 //To login
@@ -82,6 +83,14 @@ router.get('/homeEmployee', async (req, res) => {
 
 //To redirect if already logged in
 router.get('/', (req, res) => {
+  if(req.session.employee){  
+    console.log(req.session.employee); 
+
+    if (employee.empManaged.length !== 0) {
+      return res.redirect('/homeManager');
+    } 
+    return res.redirect('/homeEmployee');
+  }
   return res.redirect('login.html');
 });
 
@@ -106,6 +115,66 @@ router.post('/updateDetails', async (req, res) => {
   catch (e) {
     res.status(400).send(e);
   }
+});
+
+//To apply for leave
+router.post('/applyLeave', async (req, res) => {
+  try {
+    
+    const leave = new Leave({
+      appliedBy : req.session.employee.empId,
+      appliedTo : req.session.employee.manager,
+      startDate : req.body.startDate,
+      endDate : req.body.endDate,
+      numDays : req.body.numDays,
+      reason : req.body.reason
+    });
+    await leave.save();
+    return res.status(201).send("Leave applied with id : "+leave.leaveId);
+  }
+  catch (e) {
+    res.status(400).send(e);
+  }
+});
+
+//To view leave details
+router.get('/viewLeaveDetails', async (req, res) => {
+	try {
+    //Return to login page on back button press if already logged out
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    if (!req.session.employee) {
+      return res.redirect('login.html');
+    }
+
+    const leave = await Leave.find({
+      leaveId : req.query.leaveId
+    });
+    if (employee.empManaged.length !== 0) {
+      res.render('pages/leaveDetailsManger', { leave : leave });
+    } 
+    
+    res.render('pages/leaveDetails', { leave : leave });
+	} catch (e) {
+		res.status(500).send();
+	}
+});
+
+//To view leave history
+router.get('/viewAppliedLeaves', async (req, res) => {
+	try {
+    //Return to login page on back button press if already logged out
+    res.header('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+    if (!req.session.employee ) {
+      return res.redirect('login.html');
+    }
+
+    const leaves = await Leave.find({
+      appliedBy : req.session.employee.empId
+    });
+    res.render('pages/viewAppliedLeaves', { leaves : leaves });
+	} catch (e) {
+		res.status(500).send();
+	}
 });
 
 module.exports = router;
