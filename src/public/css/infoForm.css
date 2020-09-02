@@ -301,10 +301,10 @@
   td.active {
     background-color: #2c6ed5;
   }
-  
+  /*
   input[type="date" i] {
     padding: 14px;
-  }
+  }*/
   
   .table-condensed td, .table-condensed th {
     font-size: 14px;
