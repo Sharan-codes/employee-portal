@@ -1,9 +1,14 @@
+require('../constants');
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const validator = require('validator');
 
 leaveSchema = new mongoose.Schema({
     appliedBy: {
+        type: Number,
+        required: true
+    },
+    appliedTo: {
         type: Number,
         required: true
     },
@@ -29,12 +34,7 @@ leaveSchema = new mongoose.Schema({
     },
     status: {
       type: Number,
-      default: TRUE,
-      validate(value) {
-        if (value!==TRUE && value!==FALSE) {
-          throw new Error('status must be TRUE or FALSE');
-        }
-      }
+      default: APPLIED
     }
 }, {
     timestamps: true
