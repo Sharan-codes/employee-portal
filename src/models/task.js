@@ -1,3 +1,4 @@
+require('../constants');
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const validator = require('validator');
