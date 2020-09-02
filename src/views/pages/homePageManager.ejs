@@ -70,8 +70,8 @@
                         <div class="col-5">
                             <div class="input-group">
                                 <div class="input-group-icon">
-                                    <input id="dob" class="input--style-4 js-datepicker" type="text" name="dob">
-                                    <i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>
+                                    <input id="dob" class="input--style-4" type="date" name="dob">
+                                    <!--<i class="zmdi zmdi-calendar-note input-icon js-btn-calendar"></i>-->
                                 </div>
                             </div>
                         </div>
@@ -179,8 +179,9 @@
             sideName.innerText = sideName.textContent = '<%= emp.name %>';
         }
         var dob = new Date("<%= emp.dateOfBirth %>");
+        var currentDate = dob.toISOString().slice(0,10);
         document.getElementById('name').value = '<%= emp.name %>';
-        document.getElementById('dob').value = dob.toLocaleDateString();
+        document.getElementById('dob').value = currentDate;
         document.getElementById('phone').value = '<%= emp.phone %>';
     }
     $('#submitbtn').click(function(event) {
